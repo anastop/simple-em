@@ -15,7 +15,8 @@ var elementsPerInterval int64
 var cyclesPerElement float64
 
 type HonestMetrics struct {
-	CyclesPerElement float64
+	CyclesPerElement    float64
+	ElementsPerInterval int64
 }
 
 type LierTranscoderMetrics struct {
@@ -32,6 +33,7 @@ var smet = &LierStreamerMetrics{}
 
 func HonestHandler(w http.ResponseWriter, r *http.Request) {
 	hmet.CyclesPerElement = cyclesPerElement
+	hmet.ElementsPerInterval = elementsPerInterval
 
 	res, err := json.Marshal(hmet)
 	if err != nil {
