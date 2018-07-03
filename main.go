@@ -95,6 +95,8 @@ func scanner(exp string) {
 	}
 }
 
+// Run example:
+// /home/ubuntu/randacc 35 2>&1 >/dev/null | simple-em
 func main() {
 	go scanner(`elements_processed:(.+), cycles_per_element:(.+),`)
 	//http.HandleFunc("/v1/data", HonestHandler)
