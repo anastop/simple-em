@@ -9,6 +9,7 @@ import (
 	"os"
 	"regexp"
 	"strconv"
+	"time"
 )
 
 var elementsPerInterval int64
@@ -17,14 +18,17 @@ var cyclesPerElement float64
 type HonestMetrics struct {
 	CyclesPerElement    float64
 	ElementsPerInterval int64
+	Timestamp           float64 `json:"timestamp"`
 }
 
 type LierTranscoderMetrics struct {
 	TranscodingMbps float64
+	Timestamp       float64 `json:"timestamp"`
 }
 
 type LierStreamerMetrics struct {
 	StreamingKbps float64
+	Timestamp     float64 `json:"timestamp"`
 }
 
 var hmet = &HonestMetrics{}
@@ -32,6 +36,7 @@ var tmet = &LierTranscoderMetrics{}
 var smet = &LierStreamerMetrics{}
 
 func HonestHandler(w http.ResponseWriter, r *http.Request) {
+	hmet.Timestamp = float64(time.Now().UnixNano()) / 1000000000.0
 	hmet.CyclesPerElement = cyclesPerElement
 	hmet.ElementsPerInterval = elementsPerInterval
 
@@ -47,6 +52,7 @@ func HonestHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func LierTranscoderHandler(w http.ResponseWriter, r *http.Request) {
+	tmet.Timestamp = float64(time.Now().UnixNano()) / 1000000000.0
 	tmet.TranscodingMbps = float64(elementsPerInterval) / (20.0 * 1000000.0)
 
 	res, err := json.Marshal(tmet)
@@ -61,6 +67,7 @@ func LierTranscoderHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func LierStreamerHandler(w http.ResponseWriter, r *http.Request) {
+	smet.Timestamp = float64(time.Now().UnixNano()) / 1000000000.0
 	smet.StreamingKbps = float64(elementsPerInterval) / 1000000.0
 
 	res, err := json.Marshal(smet)
