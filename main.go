@@ -54,7 +54,7 @@ func HonestHandler(w http.ResponseWriter, r *http.Request) {
 func LierTranscoderHandler(w http.ResponseWriter, r *http.Request) {
 	tmet.Timestamp = float64(time.Now().UnixNano()) / 1000000000.0
         // tmet.TranscodingMbps = float64(elementsPerInterval) / (20.0 * 1000000.0)
-	tmet.TranscodingMbps = float64(elementsPerInterval) * float64(cyclesPerElement) * 4 /  1000000.0
+	tmet.TranscodingMbps = float64(elementsPerInterval) * float64(cyclesPerElement) * 4 / 1024 / 1024 / 1024 / 1000000.0
 
 	res, err := json.Marshal(tmet)
 	if err != nil {
